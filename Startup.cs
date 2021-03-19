@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TodoApi.Models;
+using TodoApiDTO.Core;
+using TodoApiDTO.Data.Contexts;
 
 namespace TodoApi
 {
@@ -27,9 +29,17 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt =>
-               opt.UseInMemoryDatabase("TodoList"));
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<TodoItemContext>(opt =>
+               opt.UseSqlServer(connection));
             services.AddControllers();
+
+            #region ApplicationServices
+
+            services.AddScoped<ITodoItemService>();
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
