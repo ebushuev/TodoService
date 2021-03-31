@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,14 @@ namespace TodoApi
             services.AddDbContext<TodoContext>(opt =>
                opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
-
+            services.AddMvc(o =>
+            {
+                o.OutputFormatters.RemoveType(typeof(SystemTextJsonOutputFormatter));
+                o.OutputFormatters.RemoveType(typeof(SystemTextJsonInputFormatter));
+                o.ReturnHttpNotAcceptable = true;
+            })
+            .AddXmlSerializerFormatters()
+            .SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddSwaggerGen();
         }
 
