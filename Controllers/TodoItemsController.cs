@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApi.Models;
+using TodoApiDTO.BL;
+using Microsoft.Extensions.Logging;
 
 namespace TodoApi.Controllers
 {
@@ -11,32 +13,35 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ITodoRepository _service;
+        private readonly ILogger<TodoItemsController> _log;
 
-        public TodoItemsController(TodoContext context)
+        public TodoItemsController(ITodoRepository service, ILogger<TodoItemsController> logger)
         {
-            _context = context;
+            _service = service;
+            _log = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
-            return await _context.TodoItems
-                .Select(x => ItemToDTO(x))
-                .ToListAsync();
+
+            var result = await _service.ListAsync();
+            return Ok(result);
+
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _service.GetAsync(id);
 
             if (todoItem == null)
             {
+                _log.LogInformation($"Todo item {id} is missing!");
                 return NotFound();
             }
-
-            return ItemToDTO(todoItem);
+            return todoItem;
         }
 
         [HttpPut("{id}")]
@@ -44,73 +49,41 @@ namespace TodoApi.Controllers
         {
             if (id != todoItemDTO.Id)
             {
+                _log.LogInformation($"Todo item {id} is missing!");
                 return BadRequest();
             }
+            var todoItem = await _service.SaveAsync(id, todoItemDTO);
 
-            var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null)
             {
+                _log.LogInformation($"Todo item {id} is missing!");
                 return NotFound();
             }
-
-            todoItem.Name = todoItemDTO.Name;
-            todoItem.IsComplete = todoItemDTO.IsComplete;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException) when (!TodoItemExists(id))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return Ok(todoItem);
         }
+
+        
 
         [HttpPost]
         public async Task<ActionResult<TodoItemDTO>> CreateTodoItem(TodoItemDTO todoItemDTO)
         {
-            var todoItem = new TodoItem
-            {
-                IsComplete = todoItemDTO.IsComplete,
-                Name = todoItemDTO.Name
-            };
-
-            _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
+            var todoItem = await _service.InsertAsync(todoItemDTO);
 
             return CreatedAtAction(
                 nameof(GetTodoItem),
                 new { id = todoItem.Id },
-                ItemToDTO(todoItem));
+                todoItem);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
-
-            _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            await _service.DeleteAsync(id);
+            return Ok();
         }
 
-        private bool TodoItemExists(long id) =>
-             _context.TodoItems.Any(e => e.Id == id);
 
-        private static TodoItemDTO ItemToDTO(TodoItem todoItem) =>
-            new TodoItemDTO
-            {
-                Id = todoItem.Id,
-                Name = todoItem.Name,
-                IsComplete = todoItem.IsComplete
-            };       
+
+
     }
 }
