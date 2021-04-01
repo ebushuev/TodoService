@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TodoApiDTO.BL;
 
-namespace TodoApi.Models
+namespace TodoApiDTO.DAL
 {
     public class TodoContext : DbContext
     {

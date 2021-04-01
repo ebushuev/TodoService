@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TodoApi.Models;
+using System.IO;
+using TodoApiDTO.BL;
+using TodoApiDTO.DAL;
 
 namespace TodoApi
 {
@@ -27,18 +30,30 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt =>
-               opt.UseInMemoryDatabase("TodoList"));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<TodoContext>(opt => opt.UseSqlServer(connectionString));
             services.AddControllers();
+            services.AddSwaggerGen();
+            services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodoService, TodoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
+            var path = Directory.GetCurrentDirectory();
+            log.AddFile($"{path}\\Logs\\Log.txt");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Railgun API v1.0");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 

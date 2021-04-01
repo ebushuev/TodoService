@@ -1,0 +1,7 @@
+2021-04-02T00:23:31.1500579+07:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2021-04-02T00:23:31.1715716+07:00  [INF] Hosting environment: "Development" (c3307c92)
+2021-04-02T00:23:31.1754484+07:00  [INF] Content root path: "C:\works\todo\TodoService" (b5d60022)
+2021-04-02T00:23:42.0377633+07:00 8000001f-0001-fb00-b63f-84710c7967bb [INF] Todo item 33 is missing! (adf32a2d)
+2021-04-02T01:27:16.6213354+07:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2021-04-02T01:27:16.6377076+07:00  [INF] Hosting environment: "Development" (c3307c92)
+2021-04-02T01:27:16.6459210+07:00  [INF] Content root path: "C:\works\todo\TodoService" (b5d60022)

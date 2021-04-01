@@ -1,4 +1,4 @@
-﻿namespace TodoApi.Models
+﻿namespace TodoApiDTO.BL
 {
     #region snippet
     public class TodoItem
