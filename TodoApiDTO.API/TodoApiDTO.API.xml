@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TodoApiDTO.API</name>
+    </assembly>
+    <members>
+        <member name="T:TodoApi.Controllers.TodoItemsController">
+            <summary>
+            Контроллер для работы с задачами
+            </summary>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.#ctor(TodoApiDTO.Domain.ITodoItemService,Microsoft.Extensions.Logging.ILogger{TodoApi.Controllers.TodoItemsController})">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="todoItemService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.GetTodoItems">
+            <summary>
+            Возвращает список задач
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.GetTodoItem(System.Int64)">
+            <summary>
+            Возвразщает задачу по ID
+            </summary>
+            <param name="id">ИД задачи</param>
+            <returns></returns>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.UpdateTodoItem(System.Int64,TodoApiDTO.Infrastructure.Models.TodoItemDTO)">
+            <summary>
+            Обновляет задачу
+            </summary>
+            <param name="id">ИД задачи</param>
+            <param name="todoItemDTO">Новое значение</param>
+            <returns></returns>
+            <response code="204">Modified</response>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.CreateTodoItem(TodoApiDTO.Infrastructure.Models.TodoItemDTO)">
+            <summary>
+            Создает задачу
+            </summary>
+            <param name="todoItemDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TodoApi.Controllers.TodoItemsController.DeleteTodoItem(System.Int64)">
+            <summary>
+            Удаление задачи
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <response code="204">Deleted</response>
+        </member>
+    </members>
+</doc>
