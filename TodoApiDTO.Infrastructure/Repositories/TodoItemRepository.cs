@@ -9,6 +9,7 @@ using TodoApiDTO.Infrastructure.Models;
 
 namespace TodoApiDTO.Infrastructure.Repositories
 {
+    ///<inheritdoc/>
     public class TodoItemRepository : ITodoItemRepository
     {
         private readonly TodoContext _todoContext;
@@ -18,6 +19,7 @@ namespace TodoApiDTO.Infrastructure.Repositories
             _todoContext = todoContext ?? throw new ArgumentNullException(nameof(todoContext));
         }
 
+        ///<inheritdoc/>
         public async Task<TodoItem> CreateTodoItemAsync(TodoItem todoItem)
         {
             _todoContext.TodoItems.Add(todoItem);
@@ -25,6 +27,7 @@ namespace TodoApiDTO.Infrastructure.Repositories
             return todoItem;
         }
 
+        ///<inheritdoc/>
         public async Task DeleteTodoItemAsync(long id)
         {
             var todoItem = await _todoContext.TodoItems.FindAsync(id);
@@ -38,16 +41,19 @@ namespace TodoApiDTO.Infrastructure.Repositories
             await _todoContext.SaveChangesAsync();
         }
 
+        ///<inheritdoc/>
         public async Task<TodoItem> GetTodoItemAsync(long id)
         {
             return await _todoContext.TodoItems.FindAsync(id);
         }
 
+        ///<inheritdoc/>
         public async Task<IEnumerable<TodoItem>> GetTodoItemsAsync()
         {
             return await _todoContext.TodoItems.ToListAsync();
         }
 
+        ///<inheritdoc/>
         public async Task UpdateTodoItemAsync(TodoItem todoItem)
         {
             var todoItemOld = await _todoContext.TodoItems.FindAsync(todoItem.Id);
