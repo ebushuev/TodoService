@@ -1,0 +1,6 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <PackageReference Include="andToxa.StyleCop" Version="1.0.6"/>
+        <PackageReference Include="MappingGenerator" Version="1.22.3"/>
+    </ItemGroup>
+</Project>
