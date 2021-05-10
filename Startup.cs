@@ -22,7 +22,7 @@ namespace TodoApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt =>
-                opt.UseInMemoryDatabase("TodoList"));
+                opt.UseSqlServer(Configuration.GetSection("ConnectionStrings:todo").Value));
             services.AddControllers();
             services.AddSwaggerGen(options =>
             {
