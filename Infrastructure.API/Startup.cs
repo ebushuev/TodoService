@@ -1,4 +1,6 @@
-﻿using Infrastructure.API.Models;
+﻿using Application.Extensions;
+using Infrastructure.Extensions;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace TodoApi
+namespace Infrastructure.API
 {
     public class Startup
     {
@@ -32,6 +34,8 @@ namespace TodoApi
                     Description = "Test Task ToDo API"
                 });
             });
+            services.AddApplication();
+            services.AddInfrastructure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

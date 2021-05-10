@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace TodoApi
+namespace Infrastructure.API
 {
     public class Program
     {

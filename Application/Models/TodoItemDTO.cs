@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.API.Models
+﻿namespace Application.Models
 {
     public class TodoItemDTO
     {
