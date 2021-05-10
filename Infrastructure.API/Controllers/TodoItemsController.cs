@@ -1,4 +1,5 @@
-﻿using Infrastructure.API.Models;
+﻿using Domain.Entities;
+using Infrastructure.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
