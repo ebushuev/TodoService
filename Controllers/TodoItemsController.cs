@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +14,12 @@ namespace TodoApi.Controllers
     public class TodoItemsController : ControllerBase
     {
         private readonly TodoContext _context;
+        private readonly ILogger<TodoItemsController> _logger;
 
-        public TodoItemsController(TodoContext context)
+        public TodoItemsController(TodoContext context, ILogger<TodoItemsController> logger)
         {
             _context = context;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -64,6 +68,11 @@ namespace TodoApi.Controllers
             {
                 return NotFound();
             }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "{Message}", e.Message);
+                return BadRequest(e.Message);
+            }
 
             return NoContent();
         }
@@ -71,19 +80,27 @@ namespace TodoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItemDTO>> CreateTodoItemAsync(TodoItemDTO todoItemDTO)
         {
-            var todoItem = new TodoItem
+            try
             {
-                IsComplete = todoItemDTO.IsComplete,
-                Name = todoItemDTO.Name
-            };
+                var todoItem = new TodoItem
+                {
+                    IsComplete = todoItemDTO.IsComplete,
+                    Name = todoItemDTO.Name
+                };
 
-            _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
+                _context.TodoItems.Add(todoItem);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(
-                "CreateTodoItem",
-                new { id = todoItem.Id },
-                ItemToDTO(todoItem));
+                return CreatedAtAction(
+                    "CreateTodoItem",
+                    new { id = todoItem.Id },
+                    ItemToDTO(todoItem));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "{Message}", e.Message);
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
