@@ -7,14 +7,14 @@ namespace TodoApiDTO.DataAccess.Abstraction
 {
     public interface IRepository<T> where T : class
     {
-        void Update(T item);
+        Task<int> UpdateAsync(T item);
 
-        void Add(T item);
+        Task<T> AddAsync(T item);
 
-        void Delete(T item);
+        Task<int> DeleteAsync(T item);
 
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
-        T Get(int id);
+        Task<T> GetAsync(long id);
     }
 }

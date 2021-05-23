@@ -17,30 +17,34 @@ namespace TodoApiDTO.DataAccess
             Context = context;
         }
 
-        public void Add(T item)
+        public async Task<T> AddAsync(T item)
         {
             Context.Set<T>().Add(item);
+            await Context.SaveChangesAsync();
+            return item;
         }
 
-        public void Update(T item)
+        public virtual async Task<int> UpdateAsync(T item)
         {
             Context.Set<T>().Attach(item);
             Context.Entry<T>(item).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            return await Context.SaveChangesAsync();
         }
 
-        public void Delete(T item)
+        public async Task<int> DeleteAsync(T item)
         {
             Context.Set<T>().Remove(item);
+            return await Context.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return Context.Set<T>().ToList();
+            return await Context.Set<T>().ToListAsync();
         }
 
-        public T Get(int id)
+        public async Task<T> GetAsync(long id)
         {
-            return Context.Set<T>().Find(id);
+            return await Context.Set<T>().FindAsync(id);
         }
     }
 }
