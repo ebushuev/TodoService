@@ -8,6 +8,7 @@ namespace TodoApiDTO.DataAccess
         public TodoContext(DbContextOptions<TodoContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<TodoItem> TodoItems { get; set; }

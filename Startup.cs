@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using TodoApi.Models;
 using TodoApiDTO;
 using TodoApiDTO.DataAccess;
+using TodoApiDTO.DataAccess.Abstraction;
+using TodoApiDTO.DataAccess.Implementation;
 
 namespace TodoApi
 {
@@ -39,7 +41,8 @@ namespace TodoApi
                 x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "Todo API", Version = "v1" });
             });
 
-            
+            services.AddTransient<ITodoItemService, TodoItemService>();
+            services.AddTransient<ITodoItemRepository, TodoItemRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

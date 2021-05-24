@@ -29,16 +29,17 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
+        public async Task<IActionResult> GetTodoItem(long id)
         {
-            var todoItem = await _todoItemService.GetAsync(id);
-
-            if (todoItem == null)
+            try
             {
-                return NotFound();
+                var item = await _todoItemService.GetAsync(id);
+                return Ok(item);
             }
-
-            return Ok(todoItem);
+            catch (Exception ex)
+            {
+                return ProcessExceptionMessage(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
@@ -66,8 +67,12 @@ namespace TodoApi.Controllers
             try
             {
                 var todoItem =  await _todoItemService.AddAsync(todoItemDTO);
+                // there was a problem with CreatedAtAction:
+                // https://github.com/microsoft/aspnet-api-versioning/issues/558
+                var routeValues = new { id = todoItemDTO.Id, version = "1.0" };
                 return CreatedAtAction(
                     nameof(GetTodoItem),
+                    routeValues,
                     todoItem
                     );
             }
@@ -93,7 +98,7 @@ namespace TodoApi.Controllers
 
         private IActionResult ProcessExceptionMessage(string exceptionMessage)
         {
-            if (exceptionMessage == "NotFound")
+            if (exceptionMessage == "Not Found")
             {
                 return NotFound();
             }

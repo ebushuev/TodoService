@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApi.Models;
+using TodoApiDTO.DataAccess.Abstraction;
 using TodoApiDTO.DataAccess.Implementation;
 using TodoApiDTO.Models;
 
-namespace TodoApiDTO.DataAccess.Abstraction
+namespace TodoApiDTO.DataAccess.Implementation
 {
     public class TodoItemService : ITodoItemService
     {
@@ -61,6 +62,11 @@ namespace TodoApiDTO.DataAccess.Abstraction
         public async Task<TodoItemDTO> GetAsync(long id)
         {
             var todoItem = await _todoItemRepository.GetAsync(id);
+            if (todoItem == null)
+            {
+                throw new Exception("Not Found");
+            }
+
             return MapHelper.ItemToDTO(todoItem);
         }
     }
