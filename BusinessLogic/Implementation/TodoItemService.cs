@@ -39,7 +39,9 @@ namespace TodoApiDTO.DataAccess.Implementation
                 Name = todoItemDTO.Name
             };
 
-            return MapHelper.ItemToDTO(await _todoItemRepository.AddAsync(todoItem));      
+            var addedItem = await _todoItemRepository.AddAsync(todoItem);
+
+            return MapHelper.ItemToDTO(addedItem);      
         }
 
         public async Task<int> DeleteAsync(long id)
