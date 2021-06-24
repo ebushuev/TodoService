@@ -1,7 +1,6 @@
 ﻿using System;
 namespace TodoAPIDTO.Domain.Models
 {
-    #region snippet
     public class TodoItem
     {
         public long Id { get; set; }
@@ -9,5 +8,4 @@ namespace TodoAPIDTO.Domain.Models
         public bool IsComplete { get; set; }
         public string Secret { get; set; }
     }
-    #endregion
 }
