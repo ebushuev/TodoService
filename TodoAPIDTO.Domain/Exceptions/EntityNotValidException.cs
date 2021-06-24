@@ -7,14 +7,14 @@ namespace TodoAPIDTO.Domain.Exceptions
     public class EntityNotValidException : Exception
     {
         private const string MESSAGE = "Object not passed validations";
-        private readonly IList<string> _errors;
+        public readonly IList<string> ValidationErrors;
 
         // hide empty constructor
         private EntityNotValidException()
         {
         }
 
-        public EntityNotValidException(IEnumerable<string> errors)
+        public EntityNotValidException(IEnumerable<string> errors) : base(MESSAGE)
         {
             if (errors == null)
                 throw new ArgumentNullException(nameof(errors));
@@ -23,11 +23,11 @@ namespace TodoAPIDTO.Domain.Exceptions
                 throw new ArgumentException("Collection length must be more than zero", nameof(errors));
 
             // shallow copy
-            _errors = errors.ToList();
+            ValidationErrors = errors.ToList();
 
         }
 
-        public EntityNotValidException(params string[] errors)
+        public EntityNotValidException(params string[] errors) : base(MESSAGE)
         {
             if (errors == null)
                 throw new ArgumentNullException(nameof(errors));
@@ -36,7 +36,7 @@ namespace TodoAPIDTO.Domain.Exceptions
                 throw new ArgumentException("Collection length must be more than zero", nameof(errors));
 
             // shallow copy
-            _errors = errors.ToList();
+            ValidationErrors = errors.ToList();
         }
     }
 }
