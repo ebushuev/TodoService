@@ -1,7 +1,7 @@
 ﻿namespace TodoApiDTO.Application.Interfaces.Repositories.Base
 {
-    public interface ICrudRepository<T, P> : ICreateRepository<T>, IUpdateRepository<T>,
-                        IDeleteRepository<T>, IGetAllRepository<T>, IGetRepository<T, P> where T:class
+    public interface ICrudRepository<TEntity, TKey> : ICreateRepository<TEntity>, IUpdateRepository<TEntity>,
+                        IDeleteRepository<TEntity>, IGetAllRepository<TEntity>, IGetRepository<TEntity, TKey> where TEntity : class
     {
     }
 }

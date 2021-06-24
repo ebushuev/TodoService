@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace TodoApiDTO.Application.Interfaces.Repositories.Base
 {
-    public interface IGetRepository<T, P> where T: class
+    public interface IGetRepository<TEntity, TKey> where TEntity : class
     {
-        Task<T> GetAsync(P id);
+        Task<TEntity> GetAsync(TKey id);
     }
 }

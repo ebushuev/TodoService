@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace TodoApiDTO.Application.Interfaces.Repositories.Base
 {
-    public interface IDeleteRepository<T> where T: class
+    public interface IDeleteRepository<TEntity> where TEntity : class
     {
-        Task DeleteAsync(T entity);
+        Task DeleteAsync(TEntity entity);
     }
 }

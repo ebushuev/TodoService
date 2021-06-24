@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace TodoApiDTO.Application.Interfaces.Repositories.Base
 {
-    public interface IGetAllRepository<T> where T: class
+    public interface IGetAllRepository<TEntity> where TEntity : class
     {
-        Task<IList<T>> GetAllAsync();
+        Task<IList<TEntity>> GetAllAsync();
     }
 }
