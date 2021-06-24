@@ -81,7 +81,6 @@ namespace TodoApi.Controllers
                 IsComplete = todoItemDTO.IsComplete,
                 Name = todoItemDTO.Name
             };
-
             TodoItemEntity createTodoItemResponse =
                 await _todoItemService.CreateAsync(todoItemEntity);
             TodoItemDTO response = ConvertToResponseModel(createTodoItemResponse);

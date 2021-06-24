@@ -6,11 +6,20 @@ namespace TodoApiDTO.Infrastructure.DBContexts
 {
     public class TodoContext : DbContext
     {
-        public TodoContext(DbContextOptions<TodoContext> options)
-            : base(options)
+        public DbSet<TodoItem> TodoItems { get; set; }
+
+        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
         {
         }
-
-        public DbSet<TodoItem> TodoItems { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TodoItem>()
+                .Property(b => b.Name)
+                .IsRequired()
+                .HasMaxLength(255);
+            modelBuilder.Entity<TodoItem>()
+                .Property(b => b.Secret)
+                .HasMaxLength(255);
+        }
     }
 }
