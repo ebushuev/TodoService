@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using TodoApi.Models;
+using Microsoft.OpenApi.Models;
+using DataAccess;
+using Infrastructure.Implementation.Services;
+using Infrastructure.Interfaces.DataAccess;
+using Infrastructure.Interfaces.Services;
 
 namespace TodoApi
 {
@@ -27,9 +31,16 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt =>
-               opt.UseInMemoryDatabase("TodoList"));
+            services.AddDbContext<IDbContext, TodoContext>(opt =>
+               opt.UseSqlServer(Configuration.GetConnectionString("mssql"),
+               x => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "dbo"))
+            );
             services.AddControllers();
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApi", Version = "v1" });
+            });
+            services.AddScoped<ITodoItemsService, TodoItemsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +52,12 @@ namespace TodoApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoAPi");
+            });
 
             app.UseRouting();
 
