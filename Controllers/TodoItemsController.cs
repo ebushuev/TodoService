@@ -1,11 +1,9 @@
+using Entities.Models;
+using Infrastructure.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoApi.DataAccess;
-using TodoApi.Infrastructure.Interfaces;
-using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {

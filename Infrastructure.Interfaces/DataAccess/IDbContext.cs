@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TodoApi.Models;
 
-namespace TodoApi.DataAccess
+namespace Infrastructure.Interfaces.DataAccess
 {
     public interface IDbContext
     {

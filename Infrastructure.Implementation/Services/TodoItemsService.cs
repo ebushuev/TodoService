@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoApi.Models;
-using TodoApi.Infrastructure.Interfaces;
-using TodoApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Entities.Models;
+using Infrastructure.Interfaces.Services;
+using Infrastructure.Interfaces.DataAccess;
 
-namespace TodoApi.Infrastructure.Implemetantion
+namespace Infrastructure.Implementation.Services
 {
     public class TodoItemsService : ITodoItemsService
     {

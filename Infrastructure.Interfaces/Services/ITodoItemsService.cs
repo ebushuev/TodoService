@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoApi.Models;
 
-namespace TodoApi.Infrastructure.Interfaces
+namespace Infrastructure.Interfaces.Services
 {
     public interface ITodoItemsService
     {

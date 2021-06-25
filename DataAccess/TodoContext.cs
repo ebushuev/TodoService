@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TodoApi.Models;
+﻿using Entities.Models;
+using Infrastructure.Interfaces.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
-namespace TodoApi.DataAccess
+namespace DataAccess
 {
     public class TodoContext : DbContext, IDbContext
     {
