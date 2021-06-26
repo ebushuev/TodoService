@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TodoApi.Models;
 
 namespace TodoApi.Controllers
@@ -12,10 +13,12 @@ namespace TodoApi.Controllers
     public class TodoItemsController : ControllerBase
     {
         private readonly TodoContext _context;
+        private readonly ILogger<TodoItemsController> _logger;
 
-        public TodoItemsController(TodoContext context)
+        public TodoItemsController(TodoContext context, ILogger<TodoItemsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,6 +36,7 @@ namespace TodoApi.Controllers
 
             if (todoItem == null)
             {
+                _logger.LogWarning($"The item {id} is not found.");
                 return NotFound();
             }
 
@@ -44,12 +48,14 @@ namespace TodoApi.Controllers
         {
             if (id != todoItemDTO.Id)
             {
+                _logger.LogError($"Incorrect input data. Id {id} should be equal to id used in DTO.");
                 return BadRequest();
             }
 
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null)
             {
+                _logger.LogWarning($"Updateable item {id} is not found.");
                 return NotFound();
             }
 
@@ -62,6 +68,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException) when (!TodoItemExists(id))
             {
+                _logger.LogError($"The item {id} can not be updated.");
                 return NotFound();
             }
 
@@ -93,6 +100,7 @@ namespace TodoApi.Controllers
 
             if (todoItem == null)
             {
+                _logger.LogWarning($"The item {id} is not found.");
                 return NotFound();
             }
 
@@ -111,6 +119,6 @@ namespace TodoApi.Controllers
                 Id = todoItem.Id,
                 Name = todoItem.Name,
                 IsComplete = todoItem.IsComplete
-            };       
+            };
     }
 }
